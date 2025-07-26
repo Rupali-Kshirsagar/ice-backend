@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Cart - Sweet Scoops Ice Cream</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff0f5;
+      color: #333;
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    header {
+      background: #ff6f91;
+      color: white;
+      text-align: center;
+      padding: 30px 10px;
+      font-size: 2.5rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    li {
+      background: white;
+      margin-bottom: 10px;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(255, 111, 145, 0.3);
+      font-size: 1.2rem;
+      color: #ff6f91;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    button {
+      background: #ff6f91;
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #e65a7c;
+    }
+
+    #empty-message {
+      font-size: 1.2rem;
+      color: #666;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 30px;
+      color: #ff6f91;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>Your Cart</header>
+
+  <ul id="cart-items"></ul>
+  <p id="empty-message" style="display:none;">Your cart is empty.</p>
+
+  <a href="ice.html">← Continue Shopping</a>
+
+  <script>
+    function renderCart() {
+      const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+      const list = document.getElementById('cart-items');
+      const emptyMsg = document.getElementById('empty-message');
+
+      list.innerHTML = ''; // Clear old items
+
+      if (cartItems.length === 0) {
+        emptyMsg.style.display = 'block';
+        return;
+      } else {
+        emptyMsg.style.display = 'none';
+      }
+
+      cartItems.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.textContent = item;
+
+        // Add a remove button
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = 'Remove';
+        removeBtn.onclick = () => {
+          removeFromCart(index);
+        };
+
+        li.appendChild(removeBtn);
+        list.appendChild(li);
+      });
+    }
+
+    function removeFromCart(index) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.splice(index, 1); // Remove item at index
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    // Render on page load
+    renderCart();
+  </script>
+</body>
+</html>
